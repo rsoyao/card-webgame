@@ -5,7 +5,7 @@ const cookieSession = require('cookie-session');
 const userfunctions = require('./userfunctions');
 const app = express();
 const MongoClient = Mongo.MongoClient;
-const MONGODB_URI = "mongodb://127.0.0.1:27017/data";
+const MONGODB_URI = "mongodb://127.0.0.1:27017/data"; //name of database
 const PORT = process.env.PORT || 8080;
 app.set('view engine', 'html');
 let database;
@@ -60,7 +60,7 @@ app.listen(PORT, () => {
 });
 
 //a route might be: /games/:id/actions/:actiontype
-//ajax post and get, similar to tweeter 
+//ajax post and get, similar to tweeter
 //a different action type for each thing you can do in a game
 
 //
