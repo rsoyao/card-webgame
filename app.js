@@ -60,7 +60,7 @@ app.listen(PORT, () => {
 });
 
 //a route might be: /games/:id/actions/:actiontype
-//ajax post and get, similar to tweeter 
+//ajax post and get, similar to tweeter
 //a different action type for each thing you can do in a game
 
 //
