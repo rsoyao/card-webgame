@@ -1,6 +1,7 @@
 let gameManager = {};
 
 function setUpGame() {
+    let gameManager = {};
     const deck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     let amountOfPlayers = 3;
     let winCondition = 'points';
@@ -8,7 +9,6 @@ function setUpGame() {
     //THESE WILL BE IN MONGO
     addGameConditionsToGameManager(deck, amountOfPlayers, winCondition);
     addPlayersToGameManager(amountOfPlayers, deck);
-
 
 }
 
@@ -23,7 +23,6 @@ function addGameConditionsToGameManager(deck, amountOfPlayers, win_condition) {
 
 }
 //we need a connection from userDatabase for the in game name?
-
 
 //user object nested with info
 function addPlayersToGameManager(amountOfPlayers, deck) {
@@ -70,13 +69,10 @@ function simulatePlayerAction() {
         let card = gameManager.players[player].player_cards[Math.floor(Math.random() *
             gameManager.players[player].player_cards.length)];
         gameManager.players[player].current_card_played = card;
-
     }
-
 }
 
 function selectCardFromDeck(deck) {
-
     //pick card
     let cardsRemaining = deck.length;
     let indexForChoosingCard = Math.floor(Math.random() * cardsRemaining);
@@ -111,9 +107,9 @@ function calculateWinnerOfTurn(cardToReturn) {
     }
 
     if (topCardsAreTied) {
-        console.log('top cards tied, no one wins')
+        //  console.log('top cards tied, no one wins')
     } else {
-        console.log('The winner is ', winner, ' with a', highestCard, 'they won', cardToReturn);
+        //console.log('The winner is ', winner, ' with a', highestCard, 'they won', cardToReturn);
         gameManager.players[winner].player_score += cardToReturn;
     }
 
@@ -126,8 +122,6 @@ function calculateTheWinner() {
     for (var player in gameManager.players) {
         let finalScore = gameManager.players[player].player_score;
         console.log(`${player} final score: ${finalScore}`);
-
-
         //  console.log('card', card, 'current_card_played', gameManager.players[card].current_card_played, 'highest card', highestCard);
         if (finalScore > highestScore) {
             highestScore = finalScore;
@@ -145,6 +139,7 @@ function calculateTheWinner() {
 setUpGame();
 startGame();
 calculateTheWinner();
+
 
 //console.log(gameManager);
 
