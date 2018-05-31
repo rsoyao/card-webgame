@@ -10,9 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
     "cookie-session": "^2.0.0-beta.3",
+    "ejs": "^2.6.1",
     "express": "^4.16.3",
     "mongodb": "^2.2.35",
-    "nominatim-client": "^1.0.1"
+    "node-sass-middleware": "^0.11.0",
+    "nominatim-client": "^1.0.1",
+    "normalize.scss": "^0.1.0"
   }
 }

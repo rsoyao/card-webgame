@@ -1,0 +1,23 @@
+@import 'normalize';
+@import 'colors';
+
+
+body {
+    font-family: $fontFamily;
+    background-color: $backgroundColor;
+}
+
+main {
+    header {
+        text-align: center;
+        background-color: lightblue;
+    }
+    section {
+        margin: 3rem;
+    }
+    h1,
+    h2 {
+        color: $primary;
+      }
+}
+/* look into the main.css file*/
