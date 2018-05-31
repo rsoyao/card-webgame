@@ -8,13 +8,19 @@ const longpoll = require("express-longpoll")(app)
 const MongoClient = Mongo.MongoClient;
 const MONGODB_URI = "mongodb://127.0.0.1:27017/data";
 const PORT = process.env.PORT || 8080;
+
 app.set('view engine', 'html');
 
-let userEventLog = {};
-
+//let userEventLog = [];
+//lobby state
+//flag saying changed since when 
+let lobbyState = {
+    current_users: [],
+    users_in_lobby: [],
+    users_in_mental: [],
+}
 
 let database;
-
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({
     extended: true
@@ -45,7 +51,7 @@ app.post("/login", (req, res) => {
     userfunctions.login(name, password, database, function(verified) {
         if (verified === true) {
             res.redirect('/lobby');
-            userEventLogger(name);
+            addUserToLobbyStateArray(name);
         } else {
             res.redirect('/');
         }
@@ -64,14 +70,12 @@ app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}!`);
 });
 
+//maybe only for in game, future plan query single object for last time changed
+//if object changed download whole state to client
 function userEventLogger(name) {
     let timeStamp = Date();
     console.log('Time stamp in usereventlogger');
-    //shoudl be added to an array
-    userEventLog[timeStamp] = {
-        event: "log_in",
-        name: name
-    }
+
 }
 
 app.get('/poll', function(req, res) {
@@ -85,6 +89,14 @@ app.get('/poll/:timeStamp', function(req, res) {
     res.send('hello');
 
 });
+
+function addUserToLobbyStateArray(user) {
+    lobbyState.current_users.push(user);
+    lobbyState.users_in_lobby.push(user);
+
+    console.log('lobby state', lobbyState);
+
+}
 
 //a route might be: /games/:id/actions/:actiontype
 //ajax post and get, similar to tweeter 

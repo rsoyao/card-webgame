@@ -6,14 +6,14 @@ $(document).ready(function() {
     setInterval(poll, 1000);
 
 });
-
+//this route shoudl point to /lobby/data
 const poll = function() {
     $.ajax({
         url: "http://localhost:8080/poll/" + timeOfLastEventReceived,
         //url: "http://localhost:8080/poll/",
         success: function(data) {
-            console.log('success');
-            checkLogForNewEvents(data);
+            //console.log('success');
+            //checkLogForNewEvents(data);
             // poll();
         },
         error: function() {
