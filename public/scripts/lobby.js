@@ -8,12 +8,13 @@ $(document).ready(function() {
 });
 //this route shoudl point to /lobby/data
 const poll = function() {
+
     $.ajax({
-        url: "http://localhost:8080/poll/" + timeOfLastEventReceived,
-        //url: "http://localhost:8080/poll/",
-        success: function(data) {
+        //  url: "http://localhost:8080/poll/" + timeOfLastEventReceived,
+        url: "http://localhost:8080/lobby_data",
+        success: function(lobbyState) {
             //console.log('success');
-            //checkLogForNewEvents(data);
+            checkLogForNewEvents(lobbyState);
             // poll();
         },
         error: function() {
@@ -29,8 +30,13 @@ $('#like').click(function() {
     $.post('/test')
 });
 
-function checkLogForNewEvents(data) {
-    console.log(data);
+function checkLogForNewEvents(lobbyState) {
+    console.log(lobbyState);
+
+    //look at lobbyState
+    //draw boxes in lobby for each user
+    //draw boxes in mental queue
+
 }
 
 function createInitialDate() {

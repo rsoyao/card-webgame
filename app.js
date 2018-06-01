@@ -11,13 +11,19 @@ const PORT = process.env.PORT || 8080;
 
 app.set('view engine', 'html');
 
-//let userEventLog = [];
-//lobby state
-//flag saying changed since when 
+
 let lobbyState = {
     current_users: [],
     users_in_lobby: [],
     users_in_mental: [],
+
+}
+
+//player play state is a boolean saying if the players has played card yet
+let mentalGameState = {
+    current_users: [],
+    game_state: 'waiting_to_begin',
+    player_play_state: [],
 }
 
 let database;
@@ -37,6 +43,8 @@ MongoClient.connect(MONGODB_URI, (err, db) => {
 })
 
 //ROUTES
+
+
 app.post("/register", (req, res) => {
     console.log('in post registration');
     let name = req.body.register_name;
@@ -78,17 +86,15 @@ function userEventLogger(name) {
 
 }
 
-app.get('/poll', function(req, res) {
-    console.log('poll called');
+app.get('/lobby_data', function(req, res) {
+    res.send(lobbyState);
 })
-app.get('/poll/:timeStamp', function(req, res) {
 
-    console.log('in variabled timestamp');
-    timeOfClientsLastRequest = req.params.timeStamp;
-    console.log('IN /poll:timestapm***time of client', timeOfClientsLastRequest);
-    res.send('hello');
+app.get('/mental_data', function(req, res) {
+    res.send(mentalGameState);
+})
 
-});
+
 
 function addUserToLobbyStateArray(user) {
     lobbyState.current_users.push(user);
@@ -106,3 +112,14 @@ function addUserToLobbyStateArray(user) {
 //in the database query for all things after the timestamp
 // structure a query to look for events after a certain time stamp
 //
+
+
+//use this for indiviual game rooms
+// app.get('/poll/:timeStamp', function(req, res) {
+
+//     console.log('in variabled timestamp');
+//     timeOfClientsLastRequest = req.params.timeStamp;
+//     console.log('IN /poll:timestapm***time of client', timeOfClientsLastRequest);
+//     res.send(lobbyState);
+
+// });
