@@ -6,16 +6,16 @@ $(document).ready(function() {
 });
 
 
-//eventually this polls /mental/gameid/poll (rename for purpose of route)
+
 var poll = function() {
     $.ajax({
-        url: "http://localhost:8080/mentalState",
-        success: function(data) {
-            console.log(data); // { text: "Some data" } -> will be printed in your browser console every 5 seconds
-            poll();
+        url: "http://localhost:8080/mental_data",
+        success: function(mentalGameState) {
+            console.log(mentalGameState);
+
         },
         error: function() {
-            poll();
+
         },
         timeout: 30000 // 30 seconds
     });

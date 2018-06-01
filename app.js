@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const Mongo = require('mongodb');
 const cookieSession = require('cookie-session');
 const userfunctions = require('./userfunctions');
+const gameManagerMongoInterface = require('./gameManagerMongoInterface');
 const app = express();
 const longpoll = require("express-longpoll")(app)
 const MongoClient = Mongo.MongoClient;
@@ -16,7 +17,6 @@ let lobbyState = {
     current_users: [],
     users_in_lobby: [],
     users_in_mental: [],
-
 }
 
 //player play state is a boolean saying if the players has played card yet
@@ -43,7 +43,6 @@ MongoClient.connect(MONGODB_URI, (err, db) => {
 })
 
 //ROUTES
-
 
 app.post("/register", (req, res) => {
     console.log('in post registration');
@@ -74,6 +73,12 @@ app.get("/mental", (req, res) => {
     res.sendFile('views/mental.html', { root: '.' })
 });
 
+app.post("/create_mental", (req, res) => {
+    console.log('creating new mental'); //works
+    gameManagerMongoInterface.createGame(database);
+
+
+})
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}!`);
 });
@@ -93,8 +98,6 @@ app.get('/lobby_data', function(req, res) {
 app.get('/mental_data', function(req, res) {
     res.send(mentalGameState);
 })
-
-
 
 function addUserToLobbyStateArray(user) {
     lobbyState.current_users.push(user);

@@ -6,7 +6,7 @@ $(document).ready(function() {
     setInterval(poll, 1000);
 
 });
-//this route shoudl point to /lobby/data
+
 const poll = function() {
 
     $.ajax({
@@ -15,23 +15,23 @@ const poll = function() {
         success: function(lobbyState) {
             //console.log('success');
             checkLogForNewEvents(lobbyState);
-            // poll();
+
         },
         error: function() {
             console.log('error');
-            //poll();
+
         },
         timeout: 30000 // 30 seconds
     });
 };
 
-$('#like').click(function() {
+$('#start_new_mental').click(function() {
     console.log('clicked test button');
-    $.post('/test')
+    $.post('/create_mental');
 });
 
 function checkLogForNewEvents(lobbyState) {
-    console.log(lobbyState);
+    console.log('lobbyState users', lobbyState.users_in_lobby);
 
     //look at lobbyState
     //draw boxes in lobby for each user

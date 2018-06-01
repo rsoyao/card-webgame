@@ -25,6 +25,7 @@ const register = function(name, password, database) {
         console.log('1 document inserted');
     })
 }
+
 module.exports = {
     login: login,
     register: register
