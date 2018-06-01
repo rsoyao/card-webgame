@@ -133,6 +133,14 @@ app.post("/create_mental", (req, res) => {
 
 })
 
+app.get("/move_to_mental_queue", (req, res) => {
+
+    console.log('req session', req.session);
+    console.log('req session userId', req.session.userId);
+    let cookie = req.session;
+    res.send(cookie);
+})
+
 function addUserToLobbyStateArray(user, userId) {
     let userObject = { name: user, userId: userId };
     lobbyState.current_users.push(userObject);

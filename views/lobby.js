@@ -5,9 +5,13 @@ $(document).ready(function() {
 
     setInterval(poll, 1000);
 
+
 });
+//a variable with users name
+
 
 const poll = function() {
+
     $.ajax({
 
         url: "http://localhost:8080/lobby_data",
@@ -30,6 +34,7 @@ $('#start_new_mental').click(function() {
             console.log(ret);
             if (ret === 'worked') {
                 console.log('return worked');
+
                 window.location.href = '/mental';
             } else {
                 console.log('return failed');
@@ -38,13 +43,47 @@ $('#start_new_mental').click(function() {
     });
 });
 
+//this only moves the user in the lobbystate array
+//this queries cookie and send it to a route that tells the lobby
+//state remove its associated user object from lobby add me to mental queue
+$('#join_mental').click(function() {
+    console.log('clicked join mental'); //works
+    $.get({
+        type: "GET",
+        url: '/move_to_mental_queue',
+        success: function(ret) {
+            console.log(ret);
+        }
+    });
+});
+
+
+// function getCookie() {
+//     $.get({
+//         type: "GET",
+//         url: '/move_to_mental_queue',
+//         success: function(ret) {
+//             console.log(ret);
+//         },
+
+//     });
+// }
 
 function checkLogForNewEvents(lobbyState) {
-    console.log('lobbyState users', lobbyState.users_in_lobby);
+    // getCookie();
+    //console.log('lobbyState users', lobbyState);
+    let usersInLobby = lobbyState.users_in_lobby;
+    let usersInMental = lobbyState.users_in_mental;
+    let currentUsers = lobbyState.current_users;
+
+    console.log('usersInLobby', usersInLobby); //creates lobby names
+    console.log('usersInMental', usersInMental); //creates user
+    console.log('currentUsers', currentUsers);
+
 }
 
 function removeFromLobby(user) {
-
+    console.log()
 }
 
 function addToMentalQueue(user) {
