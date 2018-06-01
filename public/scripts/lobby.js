@@ -8,20 +8,16 @@ $(document).ready(function() {
 });
 
 const poll = function() {
-
     $.ajax({
-        //  url: "http://localhost:8080/poll/" + timeOfLastEventReceived,
+
         url: "http://localhost:8080/lobby_data",
         success: function(lobbyState) {
-            //console.log('success');
             checkLogForNewEvents(lobbyState);
-
         },
         error: function() {
             console.log('error');
-
         },
-        timeout: 30000 // 30 seconds
+        timeout: 30000 // 30 seconds, where logout happens
     });
 };
 
@@ -40,19 +36,22 @@ $('#start_new_mental').click(function() {
             }
         }
     });
-
-
-
-    //window location href if 200 redirect to mental
-    //redirect using ajax
 });
+
 
 function checkLogForNewEvents(lobbyState) {
     console.log('lobbyState users', lobbyState.users_in_lobby);
+}
 
-    //look at lobbyState
-    //draw boxes in lobby for each user
-    //draw boxes in mental queue
+function removeFromLobby(user) {
+
+}
+
+function addToMentalQueue(user) {
+
+}
+
+function removeFromMentalQueue(user) {
 
 }
 

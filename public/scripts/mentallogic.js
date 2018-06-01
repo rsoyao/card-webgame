@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 });
 
-
+let gameManager = {};
 
 var poll = function() {
     $.ajax({

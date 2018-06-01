@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <script src="/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <link rel="stylesheet" href="/main.css" />
+    <script type="text/javascript" src="/scripts/lobby.js"></script>
+    <title>Lobby</title>
+    <meta name="description" content="Lobby">
+</head>
+
+<body>
+    <main>
+        <h1>Lobby</h1>
+        <div class="base">
+            <p>Username:
+                <%= login_name %>
+            </p>
+            <!--         <button type="button" class=""><%= login_name %></button>
+        <button type="button" class=""><%= login_name %></button>
+        <button type="button" class=""><%= login_name %></button> -->
+        </div>
+        <div class="selected">
+            <p>Now I'm here:</p>
+        </div>
+        <input name="like" id="like" value="Add" type="submit">
+        <!-- route in app.js that returns to lobby state
+button do a git request -->
+        <script>
+            $('button').on('click', function() {
+                if ($(this).parent().attr("class") == "base") {
+                    $(this).appendTo('.selected');
+                } else {
+                    $(this).detach().appendTo('.base');
+                }
+            });
+        </script>
+</body>
+</main>
+
+</html>
