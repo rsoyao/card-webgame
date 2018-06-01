@@ -1,6 +1,6 @@
 const retrieveGame = function(name, password, database, cb) {
 
-    database.collection('data').find(userQuery).toArray(function(err, result) {
+    database.collection('mentalGames').find(userQuery).toArray(function(err, result) {
         if (err) throw err
 
         let storedPassword = result[0].password;
@@ -13,8 +13,7 @@ const retrieveGame = function(name, password, database, cb) {
 }
 
 const createGame = function(database) {
-    console.log('in create game');
-    console.log('database', database);
+
     let gameManager = {
         game_id: 1,
         targetDeck: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],

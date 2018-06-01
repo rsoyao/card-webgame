@@ -26,8 +26,25 @@ const poll = function() {
 };
 
 $('#start_new_mental').click(function() {
-    console.log('clicked test button');
-    $.post('/create_mental');
+    console.log('clicked test button'); //works
+    $.post({
+        type: "POST",
+        url: '/create_mental',
+        success: function(ret) {
+            console.log(ret);
+            if (ret === 'worked') {
+                console.log('return worked');
+                window.location.href = '/mental';
+            } else {
+                console.log('return failed');
+            }
+        }
+    });
+
+
+
+    //window location href if 200 redirect to mental
+    //redirect using ajax
 });
 
 function checkLogForNewEvents(lobbyState) {

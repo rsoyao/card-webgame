@@ -26,6 +26,8 @@ let mentalGameState = {
     player_play_state: [],
 }
 
+let currentGames = {};
+
 let database;
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({
@@ -74,8 +76,10 @@ app.get("/mental", (req, res) => {
 });
 
 app.post("/create_mental", (req, res) => {
-    console.log('creating new mental'); //works
-    gameManagerMongoInterface.createGame(database);
+    console.log('creating new mental');
+    let gameToPutInMemory = gameManagerMongoInterface.createGame(database);
+    console.log('game that was made', gameToPutInMemory);
+    res.send('worked');
 
 
 })
