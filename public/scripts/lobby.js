@@ -1,17 +1,14 @@
-var timeOfLastEventReceived = createInitialDate();
-console.log('timeOfLastEventReceived set up', timeOfLastEventReceived);
 $(document).ready(function() {
     console.log('in lobby starts');
 
     setInterval(poll, 1000);
-
 
 });
 //a variable with users name
 
 
 const poll = function() {
-
+    console.log('in poll');
     $.ajax({
 
         url: "http://localhost:8080/lobby_data",
@@ -71,7 +68,7 @@ $('#join_mental').click(function() {
 
 function checkLogForNewEvents(lobbyState) {
     // getCookie();
-    //console.log('lobbyState users', lobbyState);
+    console.log('lobbyState users', lobbyState);
     let usersInLobby = lobbyState.users_in_lobby;
     let usersInMental = lobbyState.users_in_mental;
     let currentUsers = lobbyState.current_users;

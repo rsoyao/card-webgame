@@ -1,19 +1,37 @@
+// const express = require("express");
+// const bodyParser = require('body-parser');
+// const Mongo = require('mongodb');
+// const cookieSession = require('cookie-session');
+// const cookieParser = require('cookie-parser');
+// const userfunctions = require('./userfunctions');
+// const gameManagerMongoInterface = require('./gameManagerMongoInterface');
+// const app = express();
+// const longpoll = require("express-longpoll")(app)
+// const MongoClient = Mongo.MongoClient;
+// const MONGODB_URI = "mongodb://127.0.0.1:27017/data";
+// const PORT = process.env.PORT || 8080;
+// const path = require("path");
+// const sassMiddleware = require('node-sass-middleware');
+// const ObjectID = require('mongodb').ObjectID;
+// app.set('view engine', 'html');
+
 const express = require("express");
 const bodyParser = require('body-parser');
 const Mongo = require('mongodb');
 const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
 const userfunctions = require('./userfunctions');
+const gameManagerMongoInterface = require('./gameManagerMongoInterface');
 const app = express();
-const longpoll = require("express-longpoll")(app)
 const MongoClient = Mongo.MongoClient;
 const MONGODB_URI = "mongodb://127.0.0.1:27017/data";
 const PORT = process.env.PORT || 8080;
 const path = require("path");
 const sassMiddleware = require('node-sass-middleware');
 const ObjectID = require('mongodb').ObjectID;
-app.set('view engine', 'ejs');
+app.set('view engine', 'html');
 let database;
+
 MongoClient.connect(MONGODB_URI, (err, db) => {
     if (err) {
         throw err
@@ -95,15 +113,14 @@ app.post("/login", (req, res) => {
 });
 app.get("/lobby", (req, res) => {
     if (req.session.login_name) {
-        const templateVars = {
-            login_name: req.session.login_name
-        };
-        return res.render('urls_lobby', templateVars);
+        return res.sendFile('lobby.html', {
+            root: '.'
+        })
     } else {
         return res.status(400).send('Oops! Something is wrong!');
     }
     console.log(req.session);
-    res.render('urls_lobby', templateVars);
+    res.sendFile('views/lobby', templateVars);
 });
 //eventually there will ids for each game
 app.get("/mental", (req, res) => {
@@ -138,6 +155,19 @@ app.get("/move_to_mental_queue", (req, res) => {
     console.log('req session', req.session);
     console.log('req session userId', req.session.userId);
     let cookie = req.session;
+
+    for (var i = 0; i < lobbyState.users_in_lobby.length; i++) {
+        console.log('users in lobby', lobbyState.users_in_lobby[i].name, 'name from cookie', req.session.login_name);
+        let u = lobbyState.users_in_lobby[i].name;
+        let uFromCookie = req.session.login_name;
+        console.log("user u", u);
+        console.log('uFromCookie', uFromCookie);
+
+        if (u == uFromCookie) {
+            console.log('they are the same');
+            lobbyState.users_in_mental.push(u);
+        }
+    }
     res.send(cookie);
 })
 
