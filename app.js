@@ -154,34 +154,47 @@ app.post("/create_mental", (req, res) => {
 })
 
 app.get("/move_to_mental_queue", (req, res) => {
-    console.log('in move to mental route');
+
     let cookie = req.session;
     for (var i = 0; i < lobbyState.users_in_lobby.length; i++) {
-        console.log('users in lobby', lobbyState.users_in_lobby[i].name,
-            'name from cookie', req.session.login_name);
 
         let u = lobbyState.users_in_lobby[i].name;
         let uFromCookie = req.session.login_name;
 
         if (u == uFromCookie) {
-            console.log('cookie name and user name are the same');
-            // addUserToMentalStateArray()
             lobbyState.users_in_mental.push({ name: u });
             let userArrayEntry = lobbyState.users_in_lobby[i];
-            // console.log('user Array entry', userArrayEntry);
             let index = lobbyState.users_in_lobby.indexOf(userArrayEntry);
-
             if (index > -1) {
                 lobbyState.users_in_lobby.splice(index, 1);
             }
-
-
             lobbyState.last_change = new Date().getTime();
         }
     }
     res.send(cookie);
 })
 
+app.get("/return_to_lobby", (req, res) => {
+    console.log('in return to lobby');
+    let cookie = req.session;
+    for (var i = 0; i < lobbyState.users_in_mental.length; i++) {
+        let u = lobbyState.users_in_mental[i].name;
+        let uFromCookie = req.session.login_name;
+        if (u == uFromCookie) {
+            lobbyState.users_in_lobby.push({ name: u });
+            let userArrayEntry = lobbyState.users_in_mental[i];
+            let index = lobbyState.users_in_mental.indexOf(userArrayEntry);
+            if (index > -1) {
+                lobbyState.users_in_mental.splice(index, 1);
+            }
+            lobbyState.last_change = new Date().getTime();
+        }
+    }
+    res.send(cookie);
+
+})
+
+//this should check if user is in mental
 function addUserToLobbyStateArray(user, userId) {
     let userObject = { name: user, userId: userId };
     lobbyState.current_users.push(userObject);

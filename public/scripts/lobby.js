@@ -40,14 +40,23 @@ $('#start_new_mental').click(function() {
     });
 });
 
-//this only moves the user in the lobbystate array
-//this queries cookie and send it to a route that tells the lobby
-//state remove its associated user object from lobby add me to mental queue
+
 $('#join_mental').click(function() {
     console.log('clicked join mental'); //works
     $.get({
         type: "GET",
         url: '/move_to_mental_queue',
+        success: function(ret) {
+            console.log(ret);
+        }
+    });
+});
+
+$('#return_to_lobby').click(function() {
+    console.log('clicked return to lobby'); //works
+    $.get({
+        type: "GET",
+        url: '/return_to_lobby',
         success: function(ret) {
             console.log(ret);
         }
