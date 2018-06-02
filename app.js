@@ -1,20 +1,3 @@
-// const express = require("express");
-// const bodyParser = require('body-parser');
-// const Mongo = require('mongodb');
-// const cookieSession = require('cookie-session');
-// const cookieParser = require('cookie-parser');
-// const userfunctions = require('./userfunctions');
-// const gameManagerMongoInterface = require('./gameManagerMongoInterface');
-// const app = express();
-// const longpoll = require("express-longpoll")(app)
-// const MongoClient = Mongo.MongoClient;
-// const MONGODB_URI = "mongodb://127.0.0.1:27017/data";
-// const PORT = process.env.PORT || 8080;
-// const path = require("path");
-// const sassMiddleware = require('node-sass-middleware');
-// const ObjectID = require('mongodb').ObjectID;
-// app.set('view engine', 'html');
-
 const express = require("express");
 const bodyParser = require('body-parser');
 const Mongo = require('mongodb');
@@ -58,11 +41,12 @@ let lobbyState = {
         current_users: [],
         users_in_lobby: [],
         users_in_mental: [],
+        game_starting: false,
         last_change: firstDate,
     }
     //player play state is a boolean saying if the players has played card yet
 let mentalGameState = {
-    current_users: [],
+    players: [],
     game_state: 'waiting_to_begin',
     player_play_state: [],
 }
@@ -144,14 +128,25 @@ app.get('/lobby_data', function(req, res) {
 app.get('/mental_data', function(req, res) {
     res.send(mentalGameState);
 })
-app.post("/create_mental", (req, res) => {
-    console.log('creating new mental');
-    let gameToPutInMemory = gameManagerMongoInterface.createGame(database);
-    console.log('game that was made', gameToPutInMemory);
-    res.send('worked');
-    //pass user in 
 
+//starts from timer???instead of button//starts automatically when there are 3
+app.post("/create_mental", (req, res) => {
+
+
+    lobbyState.game_starting = true;
+    for (var i = 0; i < lobbyState.users_in_mental.length; i++) {
+        mentalGameState.players.push(lobbyState.users_in_mental[i].name);
+        console.log('********', mentalGameState);
+    }
+
+
+    lobbyState.last_change = new Date().getTime();
+
+
+    res.send(lobbyState);
 })
+
+
 
 app.get("/move_to_mental_queue", (req, res) => {
 
@@ -174,8 +169,11 @@ app.get("/move_to_mental_queue", (req, res) => {
     res.send(cookie);
 })
 
+app.get('/check_my_name', (req, res) => {
+    res.send(req.session.login_name);
+})
 app.get("/return_to_lobby", (req, res) => {
-    console.log('in return to lobby');
+
     let cookie = req.session;
     for (var i = 0; i < lobbyState.users_in_mental.length; i++) {
         let u = lobbyState.users_in_mental[i].name;
@@ -202,12 +200,6 @@ function addUserToLobbyStateArray(user, userId) {
     console.log('lobby state', lobbyState);
 }
 
-function addUserToMentalStateArray(user, userId) {
-    let userObject = { name: user, userId: userId };
-    // lobbyState.current_users.push(userObject);
-    lobbyState.users_in_mental.push(userObject);
-    console.log('lobby state', lobbyState);
-}
 
 function generateRandomString() {
     let randomString = "";
