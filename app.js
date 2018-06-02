@@ -53,10 +53,12 @@ app.use(sassMiddleware({
     debug: false,
     outputStyle: 'compressed'
 }));
+let firstDate = new Date().getTime();
 let lobbyState = {
         current_users: [],
         users_in_lobby: [],
         users_in_mental: [],
+        last_change: firstDate,
     }
     //player play state is a boolean saying if the players has played card yet
 let mentalGameState = {
@@ -151,21 +153,18 @@ app.post("/create_mental", (req, res) => {
 })
 
 app.get("/move_to_mental_queue", (req, res) => {
-
-    console.log('req session', req.session);
-    console.log('req session userId', req.session.userId);
+    console.log('in move to mental route');
     let cookie = req.session;
-
     for (var i = 0; i < lobbyState.users_in_lobby.length; i++) {
-        console.log('users in lobby', lobbyState.users_in_lobby[i].name, 'name from cookie', req.session.login_name);
+        console.log('users in lobby', lobbyState.users_in_lobby[i].name,
+            'name from cookie', req.session.login_name);
+
         let u = lobbyState.users_in_lobby[i].name;
         let uFromCookie = req.session.login_name;
-        console.log("user u", u);
-        console.log('uFromCookie', uFromCookie);
-
         if (u == uFromCookie) {
-            console.log('they are the same');
+            console.log('cookie name and user name are the same');
             lobbyState.users_in_mental.push(u);
+            lobbyState.last_change = new Date().getTime();
         }
     }
     res.send(cookie);

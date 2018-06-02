@@ -18,5 +18,8 @@
     "mongodb": "^2.2.35",
     "node-sass-middleware": "^0.11.0",
     "nominatim-client": "^1.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
   }
 }
