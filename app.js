@@ -83,10 +83,10 @@ app.post("/register", (req, res) => {
             username: name,
             password: password
         };
-        console.log(users);
+
     }
     userfunctions.register(name, password, database, function(insertedID) {
-        console.log('inserted id', insertedID);
+
         let userId = ObjectID(insertedID).toString();
         req.session.login_name = req.body.register_name;
         req.session.userId = userId;
@@ -114,6 +114,7 @@ app.post("/login", (req, res) => {
     });
 });
 app.get("/lobby", (req, res) => {
+    lobbyState.last_change = new Date().getTime();
     if (req.session.login_name) {
         return res.sendFile('lobby.html', {
             root: '.'
@@ -161,9 +162,20 @@ app.get("/move_to_mental_queue", (req, res) => {
 
         let u = lobbyState.users_in_lobby[i].name;
         let uFromCookie = req.session.login_name;
+
         if (u == uFromCookie) {
             console.log('cookie name and user name are the same');
-            lobbyState.users_in_mental.push(u);
+            // addUserToMentalStateArray()
+            lobbyState.users_in_mental.push({ name: u });
+            let userArrayEntry = lobbyState.users_in_lobby[i];
+            // console.log('user Array entry', userArrayEntry);
+            let index = lobbyState.users_in_lobby.indexOf(userArrayEntry);
+
+            if (index > -1) {
+                lobbyState.users_in_lobby.splice(index, 1);
+            }
+
+
             lobbyState.last_change = new Date().getTime();
         }
     }
@@ -174,6 +186,13 @@ function addUserToLobbyStateArray(user, userId) {
     let userObject = { name: user, userId: userId };
     lobbyState.current_users.push(userObject);
     lobbyState.users_in_lobby.push(userObject);
+    console.log('lobby state', lobbyState);
+}
+
+function addUserToMentalStateArray(user, userId) {
+    let userObject = { name: user, userId: userId };
+    // lobbyState.current_users.push(userObject);
+    lobbyState.users_in_mental.push(userObject);
     console.log('lobby state', lobbyState);
 }
 

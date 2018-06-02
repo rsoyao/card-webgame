@@ -1,7 +1,7 @@
 $(document).ready(function() {
     console.log('in lobby starts');
 
-    setInterval(poll, 4000);
+    setInterval(poll, 1000);
 
 });
 //a variable with users name
@@ -69,9 +69,32 @@ $('#join_mental').click(function() {
 
 function checkLogForNewEvents(lobbyState) {
 
-    console.log('lobby date', lobbyState.last_change, 'client date', lastLobbyStateChange);
+    console.log(lobbyState);
     if (lobbyState.last_change > lastLobbyStateChange) {
-        console.log('i will do something new!')
+        console.log('i will do something new!');
+
+        let usersInLobby = lobbyState.users_in_lobby;
+        let htmlToAppendToLobby = "";
+        // $('#lobby').empty();
+        for (var i = 0; i < usersInLobby.length; i++) {
+            let userToUpdate = lobbyState.users_in_lobby[i].name;
+
+            htmlToAppendToLobby += `${userToUpdate}`;
+            htmlToAppendToLobby += '<br>';
+        }
+        $('#lobby').append('<p>').html(htmlToAppendToLobby);
+
+
+        let usersInMental = lobbyState.users_in_mental;
+        let htmlToAppendToMental = "";
+        for (var i = 0; i < usersInMental.length; i++) {
+            let userToUpdate = lobbyState.users_in_mental[i].name;
+
+            htmlToAppendToMental += `${userToUpdate}`;
+            htmlToAppendToMental += '<br>';
+        }
+        $('#mental_queue').append('<p>').html(htmlToAppendToMental);
+
         lastLobbyStateChange = lobbyState.last_change;
     } else {
         console.log('nothing has changed');
